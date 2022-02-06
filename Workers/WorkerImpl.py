@@ -1,4 +1,5 @@
 from Augmenters.Augmenter import Augmenter
+from Augmenters.AugmenterRotate import AugmenterRotate
 from FileManagers.ImageManager import ImageManager
 from FileManagers.LabelManager import LabelManager
 from Workers.Worker import Worker
@@ -32,21 +33,43 @@ class WorkerImpl(Worker):
         augmented_yolo_file_name: str = image_name + augmenter_signature + ".txt"
         augmented_yolo_file_path: str = yolo_dir + augmented_yolo_file_name
         augmented_yolo_lines = []
-                 
+
         with Image.open(path) as image:
+            image = image.rotate(self.__get_initial_rotation__(image), expand = True)
             augmented_image: Image = self.__augmenter__.get_image_from_array(self.__augmenter__.transform(image))            
             augmented_image.save(augmented_image_path, "JPEG")
 
         self.__label_manager__.read_YOLO_file(path = yolo_file_path, 
                                                 on_file_opened = lambda: self.__create_new_YOLO_file__(augmented_yolo_file_path), 
                                                 on_line_read = lambda line: augmented_yolo_lines.extend(self.__get_transformed_YOLO_line__(line)),
-                                                on_eof = lambda: self.__write_transformed_YOLO_lines__(augmented_yolo_lines))
+                                                on_eof = lambda: self.__write_transformed_YOLO_lines__(augmented_yolo_file_path, augmented_yolo_lines))
+
+        return augmented_image_path, augmented_yolo_file_path
 
     def __create_new_YOLO_file__(self, path: str):
-        pass
+        open(path, "w")
 
     def __get_transformed_YOLO_line__(self, original_line: str):
-        return []
-    
-    def __write_transformed_YOLO_lines__(self, lines):
-        pass
+        original_line_parts = original_line.split(" ")
+        center_x, center_y, width, height = self.__augmenter__.get_transformed_YOLO_values(center_x = float(original_line_parts[1]), 
+                                                                                           center_y = float(original_line_parts[2]), 
+                                                                                           width    = float(original_line_parts[3]), 
+                                                                                           height   = float(original_line_parts[4]))
+        return [original_line_parts[0] + " " +  "{:.6f}".format(center_x) + " " + "{:.6f}".format(center_y) + " " + "{:.6f}".format(width) + " " + "{:.6f}".format(height)]
+        
+    def __write_transformed_YOLO_lines__(self, path: str, lines):
+        with open(path, "w") as yolo_file:
+            for line in lines:
+                yolo_file.write(line + "\n")
+
+    def __get_initial_rotation__(self, image: Image):
+            try:
+                initial_rotation: int = int(dict(image._getexif().items())[274])
+                if initial_rotation == 6:
+                    return -90
+                elif initial_rotation == 8:
+                    return 90
+            except:
+                pass
+
+            return 0

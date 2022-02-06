@@ -17,7 +17,7 @@ traslate: AugmenterTraslate = AugmenterTraslate(300, 500)
 h_flip: AugmenterHFlip = AugmenterHFlip()
 v_flip: AugmenterVFlip = AugmenterVFlip()
 h_shear: AugmenterHShear = AugmenterHShear(0.3)
-v_shear: AugmenterVShear = AugmenterVShear(0.3)
+v_shear: AugmenterVShear = AugmenterVShear(-0.4)
 scale: AugmenterScale = AugmenterScale(0.5)
 
 #center_x, center_y, width, height = 0.59, 0.247, 0.085, 0.085 #eye
@@ -25,7 +25,7 @@ center_x, center_y, width, height = 0.45, 0.32, 0.76, 0.36 #head
 create_original_image = True
 
 with Image.open("test.jpg") as image:
-    tester: Tester = Tester(scale) 
+    tester: Tester = Tester(v_shear) 
 
     if create_original_image == True:
         #tester.set_draw_on_image(True)

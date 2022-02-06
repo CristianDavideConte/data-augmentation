@@ -24,10 +24,10 @@ class AugmenterHShear(Augmenter):
                  	                    matrix = self.__transformation_matrix__)
     
     def get_transformed_YOLO_values(self, center_x: float, center_y: float, width: float, height: float):   
-        s_center_x: float = center_x + center_y * self.__shear_x__ + - height / 2 * self.__shear_x__      
+        #s_center_x: float = center_x + center_y * self.__shear_x__ - height / 2 * self.__shear_x__      
         s_width: float = width * self.__img_width__ + abs(height * self.__img_height__ * self.__shear_x__) 
         
-        return s_center_x, center_y, s_width / self.__img_width__, height
+        return center_x, center_y, s_width / self.__img_width__, height
 	
     def get_augmenter_signature(self):
         return "HSHEAR"
