@@ -27,12 +27,12 @@ def __execute_job__(augmenter: Augmenter, image_path: str):
     WorkerImpl(augmenter, image_manager, label_manager).transform_image_and_YOLO_label(image_path)
     #print(augmenter.get_augmenter_signature(), image_path)
 
-def spawn_worker(subject_dir: str):
+def spawn_worker(subject_dir: str, subject_num: str):
     global dataset_dir, yolo_labels_dir, image_manager, label_manager
 
     workers = []
     images_paths = image_manager.get_all_images_in_path_and_subdirs(dataset_dir + subject_dir)
-
+ 
     for image_path in images_paths:
         contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(random.randint(-30, 30), random.randint(-30, 30))
         traslate: AugmenterTraslate = AugmenterTraslate(random.randint(-50, 50), random.randint(-50, 50))
@@ -57,15 +57,19 @@ def spawn_worker(subject_dir: str):
 
     for worker in workers:
         worker.join()
+    
+    print("Done with Subject", subject_num)
 
 
 #for each subject'image
 #create N augmenters
-#spawn N a workers and augment the image 
+#spawn N threads
+#each thread should spawn M workers
+#each worker should augment one image with X augmenters 
 threads = []
 for i in range(1, 43):
     subject_dir: str = "Subject {}/".format(i)
-    threads.append(Thread(target = spawn_worker, args = (subject_dir,)))
+    threads.append(Thread(target = spawn_worker, args = (subject_dir, i,)))
 
 for thread in threads:
     thread.start()
