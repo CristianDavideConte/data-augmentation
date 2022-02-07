@@ -18,8 +18,8 @@ import random
 
 
 #Global variables
-dataset_dir: str = "../dataset/"
-yolo_labels_dir: str = "../dataset/Labels/YOLO/"
+dataset_dir: str = "/content/dataset/"
+yolo_labels_dir: str = "/content/dataset/Labels/YOLO/"
 
 image_manager: ImageManagerImpl = ImageManagerImpl()
 label_manager: LabelManagerImpl = LabelManagerImpl(yolo_labels_dir, image_manager)
@@ -35,6 +35,7 @@ def __get_random_float_avoiding_zero__(lower_bound: float, upper_bound: float, t
 def __execute_job__(augmenter: Augmenter, image_path: str):
     global image_manager, label_manager
     WorkerImpl(augmenter, image_manager, label_manager).transform_image_and_YOLO_label(image_path)
+    print(augmenter.get_augmenter_signature(), image_path)
 
 def spawn_worker(subject_dir: str, subject_num: str):
     global dataset_dir, yolo_labels_dir, image_manager, label_manager
@@ -78,16 +79,19 @@ def spawn_worker(subject_dir: str, subject_num: str):
 # spawn N threads
 # each thread should spawn M workers
 # each worker should augment one image with X augmenters 
-threads = []
+
+#threads = []
 for i in range(1, 43):
+    print("Subject", i)
     subject_dir: str = "Subject {}/".format(i)
-    threads.append(Thread(target = spawn_worker, args = (subject_dir, i,)))
+    spawn_worker(subject_dir, i)
+    #threads.append(Thread(target = spawn_worker, args = (subject_dir, i,)))
 
-for thread in threads:
-    thread.start()
+#for thread in threads:
+#    thread.start()
 
-subjects_completed = 0
-for thread in threads:
-    thread.join()
-    subjects_completed += 1
-    print("\nDone so far:", subjects_completed, "\n")
+#subjects_completed = 0
+#for thread in threads:
+#    thread.join()
+#    subjects_completed += 1
+#    print("\nDone so far:", subjects_completed, "\n")
