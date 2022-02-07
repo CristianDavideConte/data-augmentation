@@ -2,7 +2,7 @@ from FileManagers.ImageManager import ImageManager
 
 class ImageManagerImpl(ImageManager):
     
-    def __init__(self, valid_exts: (str) = (".jpg",)):
+    def __init__(self, valid_exts: (str) = (".jpg", ".jpeg",)):
         self.__valid_exts__ = valid_exts
 
     def get_all_images_in_path(self, path: str):
