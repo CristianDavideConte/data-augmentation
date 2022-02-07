@@ -3,7 +3,7 @@ import numpy as np
 import math
 
 from PIL import Image
-from scipy import ndimage
+from cupyx.scipy import ndimage
 
 class AugmenterRotate(Augmenter):
     

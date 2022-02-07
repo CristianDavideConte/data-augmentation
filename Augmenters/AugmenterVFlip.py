@@ -2,7 +2,7 @@ from Augmenters.Augmenter import Augmenter
 import numpy as np
 
 from PIL import Image
-from scipy import ndimage
+from cupyx.scipy import ndimage
 
 class AugmenterVFlip(Augmenter):
 		
