@@ -83,7 +83,7 @@ def spawn_worker(subject_dir: str, subject_num: str):
 # each worker should augment one image with X augmenters 
 
 #threads = []
-for i in range(1, 2):
+for i in range(1, 43):
     print("Subject", i)
     subject_dir: str = "Subject {}/".format(i)
     spawn_worker(subject_dir, i)
