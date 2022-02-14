@@ -11,6 +11,7 @@ from Augmenters.AugmenterTraslate import AugmenterTraslate
 from Augmenters.AugmenterHShear import AugmenterHShear
 from Augmenters.AugmenterVShear import AugmenterVShear
 from Augmenters.AugmenterScale import AugmenterScale
+from Augmenters.AugmenterGrayscale import AugmenterGrayscale
 
 from threading import Thread
 
@@ -46,14 +47,15 @@ def spawn_worker(subject_dir: str, subject_num: str):
     images_paths = image_manager.get_all_images_in_path_and_subdirs(dataset_dir + subject_dir)
  
     for image_path in images_paths:
-        contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(__get_random_int_avoiding_zero__(-30, 30, 10), __get_random_int_avoiding_zero__(-30, 30, 10))
-        traslate: AugmenterTraslate = AugmenterTraslate(__get_random_int_avoiding_zero__(-50, 50, 20), __get_random_int_avoiding_zero__(-50, 50, 20))
-        rotate: AugmenterRotate = AugmenterRotate(random.randint(30, 330))
+        contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(__get_random_int_avoiding_zero__(-90, 90, 10), __get_random_int_avoiding_zero__(-90, 90, 10))
+        traslate: AugmenterTraslate = AugmenterTraslate(__get_random_int_avoiding_zero__(-70, 70, 20), __get_random_int_avoiding_zero__(-70, 70, 20))
+        rotate: AugmenterRotate = AugmenterRotate(random.randint(45, 315))
         h_flip: AugmenterHFlip = AugmenterHFlip()
         v_flip: AugmenterVFlip = AugmenterVFlip()
-        h_shear: AugmenterHShear = AugmenterHShear(__get_random_float_avoiding_zero__(-0.31, 0.31, 0.1))
-        v_shear: AugmenterVShear = AugmenterVShear(__get_random_float_avoiding_zero__(-0.31, 0.31, 0.1))
-        scale: AugmenterScale = AugmenterScale(round(random.uniform(0.5, 1.4), 2))
+        h_shear: AugmenterHShear = AugmenterHShear(__get_random_float_avoiding_zero__(-0.40, 0.40, 0.1))
+        v_shear: AugmenterVShear = AugmenterVShear(__get_random_float_avoiding_zero__(-0.40, 0.40, 0.1))
+        scale: AugmenterScale = AugmenterScale(round(random.uniform(0.4, 1.4), 2))
+        grayscale: AugmenterGrayscale = AugmenterGrayscale()
 
         workers.append(Thread(target = __execute_job__, args = (contrast, image_path)))
         workers.append(Thread(target = __execute_job__, args = (traslate, image_path)))
@@ -63,6 +65,7 @@ def spawn_worker(subject_dir: str, subject_num: str):
         workers.append(Thread(target = __execute_job__, args = (h_shear, image_path)))
         workers.append(Thread(target = __execute_job__, args = (v_shear, image_path)))
         workers.append(Thread(target = __execute_job__, args = (scale, image_path)))
+        workers.append(Thread(target = __execute_job__, args = (grayscale, image_path)))
 
     for worker in workers:
         worker.start()
