@@ -18,7 +18,7 @@ from threading import Thread
 import random 
 
 
-#Global variables
+# Global variables
 #dataset_dir: str = "../dataset/"
 #yolo_labels_dir: str = "../dataset/Labels/YOLO/"
 dataset_dir: str = "/content/dataset/"
@@ -78,25 +78,13 @@ def spawn_worker(subject_dir: str, subject_num: str):
 
 
 
-#Main Script:
+# Main Script:
 # for each subject'image
 # create N augmenters
-# spawn N threads
-# each thread should spawn M workers
-# each worker should augment one image with X augmenters 
-
-#threads = []
+# create N threads
+# each thread should spawn 1 worker
+# each worker should augment 1 image with 1 augmenter 
 for i in range(1, 43):
     print("Subject", i)
     subject_dir: str = "Subject {}/".format(i)
     spawn_worker(subject_dir, i)
-    #threads.append(Thread(target = spawn_worker, args = (subject_dir, i,)))
-
-#for thread in threads:
-#    thread.start()
-
-#subjects_completed = 0
-#for thread in threads:
-#    thread.join()
-#    subjects_completed += 1
-#    print("\nDone so far:", subjects_completed, "\n")
