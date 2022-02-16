@@ -8,10 +8,6 @@ class AugmenterGrey(Augmenter):
 		
     def __init__(self, noise: float):
         self.__noise__ = abs(noise)
-        self.__transformation_matrix__: np.ndarray = np.array([[1, 0, 0, 0], 
-                                                               [0, 1, 0, 0], 
-                                                               [0, 0, 1, 0],
-                                                               [0, 0, 0, 1]])
 
     def transform(self, image: Image):
         image = random_noise(image, mode = "gaussian", var = self.__noise__)
