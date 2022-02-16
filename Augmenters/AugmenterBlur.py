@@ -10,5 +10,8 @@ class AugmenterBlur(Augmenter):
     def transform(self, image: Image):
         return gaussian_filter(image, (self.__blur__, self.__blur__, 0))
 		
-    def get_transformed_label(self, center_x: float, center_y: float, width: float, height: float):       	
+    def get_transformed_YOLO_values(self, center_x: float, center_y: float, width: float, height: float):       	
         return center_x, center_y, width, height
+
+    def get_augmenter_signature(self):
+        return "BLUR"

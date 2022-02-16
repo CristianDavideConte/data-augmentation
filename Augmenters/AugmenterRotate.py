@@ -8,8 +8,8 @@ from scipy import ndimage
 class AugmenterRotate(Augmenter):
     
     def __init__(self, angle: float):
-        self.__angle__: float = math.radians(angle)
         self.__rotation__: float = angle     
+        self.__angle__: float = math.radians(angle)
         self.__cos__: float = math.cos(self.__angle__)
         self.__sin__: float = math.sin(self.__angle__) 
         self.__transformation_matrix__: np.ndarray = np.array([[ self.__cos__, self.__sin__, 0, 0], 
@@ -55,4 +55,7 @@ class AugmenterRotate(Augmenter):
         #return r_center_x / self.__img_width__, r_center_y / self.__img_height__, area_proportion * r_width / self.__img_width__, area_proportion * r_height / self.__img_height__ 
 	
     def get_augmenter_signature(self):
-        return "ROTATE"
+        #N = negative rotation (es. -83.2° -> N83)
+        #P = positve rotation  (es. +47.9° -> P47)
+        rotation_sign: str = "P" if self.__rotation__ > 0.0 else "N" 
+        return "ROTATE_" + rotation_sign + str(abs(int(self.__rotation__)))

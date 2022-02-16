@@ -16,5 +16,8 @@ class AugmenterGrayscale(Augmenter):
         return ndimage.affine_transform(input  = self.get_array_from_image(image),
                                         matrix = self.__transformation_matrix__)
     
-    def get_transformed_label(self, center_x: float, center_y: float, width: float, height: float):       	
+    def get_transformed_YOLO_values(self, center_x: float, center_y: float, width: float, height: float):       	
         return center_x, center_y, width, height
+            
+    def get_augmenter_signature(self):
+        return "GRSCL"

@@ -59,3 +59,6 @@ class Tester:
         t_center_x, t_center_y, t_width, t_height = self.__augmenter__.get_transformed_YOLO_values(center_x, center_y, width, height) 
         
         return self.test_original_values(t_image, t_center_x, t_center_y, t_width, t_height)
+
+    def get_augmenter_signature(self):
+        return self.__augmenter__.get_augmenter_signature()

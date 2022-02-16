@@ -11,6 +11,8 @@ from Augmenters.AugmenterTraslate import AugmenterTraslate
 from Augmenters.AugmenterHShear import AugmenterHShear
 from Augmenters.AugmenterVShear import AugmenterVShear
 from Augmenters.AugmenterScale import AugmenterScale
+from Augmenters.AugmenterBlur import AugmenterBlur
+from Augmenters.AugmenterNoise import AugmenterNoise
 from Augmenters.AugmenterGrayscale import AugmenterGrayscale
 
 from threading import Thread
@@ -49,23 +51,29 @@ def spawn_worker(subject_dir: str, subject_num: str):
     for image_path in images_paths:
         contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(__get_random_int_avoiding_zero__(-90, 90, 10), __get_random_int_avoiding_zero__(-90, 90, 10))
         traslate: AugmenterTraslate = AugmenterTraslate(__get_random_int_avoiding_zero__(-70, 70, 20), __get_random_int_avoiding_zero__(-70, 70, 20))
-        rotate: AugmenterRotate = AugmenterRotate(random.randint(45, 315))
+        rotate_up: AugmenterRotate = AugmenterRotate(__get_random_int_avoiding_zero__(-45, 45, 20))
+        rotate_down: AugmenterRotate = AugmenterRotate(random.randint(135, 225))
         h_shear: AugmenterHShear = AugmenterHShear(__get_random_float_avoiding_zero__(-0.40, 0.40, 0.1))
         v_shear: AugmenterVShear = AugmenterVShear(__get_random_float_avoiding_zero__(-0.40, 0.40, 0.1))
         h_flip: AugmenterHFlip = AugmenterHFlip()
         v_flip: AugmenterVFlip = AugmenterVFlip()
         grayscale: AugmenterGrayscale = AugmenterGrayscale()
         scale: AugmenterScale = AugmenterScale(round(random.uniform(0.4, 1.4), 2))
+        blur: AugmenterBlur = AugmenterBlur(random.randint(10, 15))
+        noise: AugmenterNoise = AugmenterNoise(random.randint(10, 20)) # <--------------------------YET TO BE TESTED
 
         workers.append(Thread(target = __execute_job__, args = (contrast, image_path)))
         workers.append(Thread(target = __execute_job__, args = (traslate, image_path)))
-        workers.append(Thread(target = __execute_job__, args = (rotate, image_path)))
+        workers.append(Thread(target = __execute_job__, args = (rotate_up, image_path)))
+        workers.append(Thread(target = __execute_job__, args = (rotate_down, image_path)))
         workers.append(Thread(target = __execute_job__, args = (h_flip, image_path)))
         workers.append(Thread(target = __execute_job__, args = (v_flip, image_path)))
         workers.append(Thread(target = __execute_job__, args = (h_shear, image_path)))
         workers.append(Thread(target = __execute_job__, args = (v_shear, image_path)))
         workers.append(Thread(target = __execute_job__, args = (scale, image_path)))
         workers.append(Thread(target = __execute_job__, args = (grayscale, image_path)))
+        workers.append(Thread(target = __execute_job__, args = (blur, image_path)))
+        workers.append(Thread(target = __execute_job__, args = (noise, image_path)))
 
     for worker in workers:
         worker.start()

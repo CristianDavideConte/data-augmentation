@@ -9,25 +9,31 @@ from Augmenters.AugmenterHShear import AugmenterHShear
 from Augmenters.AugmenterVShear import AugmenterVShear
 from Augmenters.AugmenterScale import AugmenterScale
 from Augmenters.AugmenterBlur import AugmenterBlur
+from Augmenters.AugmenterNoise import AugmenterNoise
+from Augmenters.AugmenterGrayscale import AugmenterGrayscale
 from Testers.Tester import Tester
 from PIL import Image
 
+import random 
+
 contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(+50, 0)
-rotate: AugmenterRotate = AugmenterRotate(-70)
+rotate: AugmenterRotate = AugmenterRotate(225)
 traslate: AugmenterTraslate = AugmenterTraslate(300, 500)
 h_flip: AugmenterHFlip = AugmenterHFlip()
 v_flip: AugmenterVFlip = AugmenterVFlip()
 h_shear: AugmenterHShear = AugmenterHShear(0.3)
 v_shear: AugmenterVShear = AugmenterVShear(-0.4)
 scale: AugmenterScale = AugmenterScale(0.5)
-blur: AugmenterBlur = AugmenterBlur(5)
+blur: AugmenterBlur = AugmenterBlur(10)
+noise: AugmenterNoise = AugmenterNoise(10)
+grayscale: AugmenterGrayscale = AugmenterGrayscale()
 
 #center_x, center_y, width, height = 0.59, 0.247, 0.085, 0.085 #eye
 center_x, center_y, width, height = 0.45, 0.32, 0.76, 0.36 #head
 create_original_image = True
 
 with Image.open("test.jpg") as image:
-    tester: Tester = Tester(blur) 
+    tester: Tester = Tester(noise) #change this in order to test a new augmenter
 
     if create_original_image == True:
         #tester.set_draw_on_image(True)
@@ -39,6 +45,8 @@ with Image.open("test.jpg") as image:
     tester.set_outline_color("blue")
     transformed_image: Image = tester.test(original_image, center_x, center_y, width, height)
     transformed_image.save("test_augmented.jpg", "JPEG")
+
+    print(tester.get_augmenter_signature())
 
 
 
