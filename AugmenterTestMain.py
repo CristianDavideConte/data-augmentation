@@ -31,8 +31,9 @@ grayscale: AugmenterGrayscale = AugmenterGrayscale()
 #center_x, center_y, width, height = 0.59, 0.247, 0.085, 0.085 #eye
 center_x, center_y, width, height = 0.45, 0.32, 0.76, 0.36 #head
 create_original_image = True
+test_image_path = "test.jpg" #or subject.jpg
 
-with Image.open("test.jpg") as image:
+with Image.open(test_image_path) as image: 
     tester: Tester = Tester(noise) #change this in order to test a new augmenter
 
     if create_original_image == True:
