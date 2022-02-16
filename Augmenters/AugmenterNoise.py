@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 from skimage.util import random_noise
 
-class AugmenterGrey(Augmenter):
+class AugmenterNoise(Augmenter):
 		
     def __init__(self, noise: float):
         self.__noise__ = abs(noise)

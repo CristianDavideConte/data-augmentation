@@ -3,7 +3,7 @@ from Augmenters.Augmenter import Augmenter
 from PIL import Image
 from scipy.ndimage.filters import gaussian_filter
 
-class AugmenterGrey(Augmenter):
+class AugmenterBlur(Augmenter):
     def __init__(self, blur: float):
         self.__blur__ = abs(blur)
 
