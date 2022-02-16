@@ -8,7 +8,7 @@ class AugmenterBlur(Augmenter):
         self.__blur__ = abs(blur)
 
     def transform(self, image: Image):
-        return gaussian_filter(image, (self.__blur__, self.__blur__, 0))
+        return gaussian_filter(self.get_array_from_image(image), (self.__blur__, self.__blur__, 0))
 		
     def get_transformed_YOLO_values(self, center_x: float, center_y: float, width: float, height: float):       	
         return center_x, center_y, width, height
