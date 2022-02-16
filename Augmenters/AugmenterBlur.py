@@ -1,8 +1,6 @@
 from Augmenters.Augmenter import Augmenter
-import numpy as np
 
 from PIL import Image
-from scipy import ndimage
 from scipy.ndimage.filters import gaussian_filter
 
 class AugmenterGrey(Augmenter):
