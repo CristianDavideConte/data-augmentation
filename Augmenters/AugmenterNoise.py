@@ -1,4 +1,4 @@
-from Augmenter import Augmenter
+from Augmenters.Augmenter import Augmenter
 import numpy as np
 
 from PIL import Image
