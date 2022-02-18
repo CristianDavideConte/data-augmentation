@@ -1,3 +1,4 @@
+from FileManagers.FileManager import FileManager
 from FileManagers.ImageManager import ImageManager
 
 class ImageManagerImpl(ImageManager):
@@ -12,7 +13,7 @@ class ImageManagerImpl(ImageManager):
         return self.get_all_files_in_path_and_subdirs(path, self.__valid_exts__)
 
     def get_image_name_from_path(self, path: str):
-        return path.split("/")[-1]
+        return path.split(self.os_separator)[-1]
 
     def get_image_name_from_path_no_ext(self, path: str):
         return self.get_image_name_from_path(path).split(".")[0]

@@ -16,7 +16,7 @@ from PIL import Image
 
 import random 
 
-contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(+50, 0)
+contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(+50, 100)
 rotate: AugmenterRotate = AugmenterRotate(225)
 traslate: AugmenterTraslate = AugmenterTraslate(300, 500)
 h_flip: AugmenterHFlip = AugmenterHFlip()
@@ -25,7 +25,7 @@ h_shear: AugmenterHShear = AugmenterHShear(0.3)
 v_shear: AugmenterVShear = AugmenterVShear(-0.4)
 scale: AugmenterScale = AugmenterScale(0.5)
 blur: AugmenterBlur = AugmenterBlur(10)
-noise: AugmenterNoise = AugmenterNoise(10)
+noise: AugmenterNoise = AugmenterNoise(0.10)
 grayscale: AugmenterGrayscale = AugmenterGrayscale()
 
 #center_x, center_y, width, height = 0.59, 0.247, 0.085, 0.085 #eye
@@ -48,6 +48,5 @@ with Image.open(test_image_path) as image:
     transformed_image.save("test_augmented.jpg", "JPEG")
 
     print(tester.get_augmenter_signature())
-
 
 

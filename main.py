@@ -18,13 +18,16 @@ from Augmenters.AugmenterGrayscale import AugmenterGrayscale
 from threading import Thread
 
 import random 
-
+import os
 
 # Global variables
-#dataset_dir: str = "../dataset/"
-#yolo_labels_dir: str = "../dataset/Labels/YOLO/"
-dataset_dir: str = "/content/dataset/"
-yolo_labels_dir: str = "/content/dataset/Labels/YOLO/"
+MAX_BATCHES_LOAD_COUNT = 50 #highest possible number agumentations done at the same time
+
+path_sep = os.path.sep
+dataset_dir: str = ".." + path_sep + "dataset" + path_sep
+yolo_labels_dir: str = ".." + path_sep + "dataset" + path_sep + "Labels"  + path_sep + "YOLO" + path_sep
+#dataset_dir: str = "/content/dataset/"
+#yolo_labels_dir: str = "/content/dataset/Labels/YOLO/"
 
 image_manager: ImageManagerImpl = ImageManagerImpl()
 label_manager: LabelManagerImpl = LabelManagerImpl(yolo_labels_dir, image_manager)
@@ -43,12 +46,15 @@ def __execute_job__(augmenter: Augmenter, image_path: str):
     print(augmenter.get_augmenter_signature(), image_path)
 
 def spawn_worker(subject_dir: str, subject_num: str):
-    global dataset_dir, yolo_labels_dir, image_manager, label_manager
+    global dataset_dir, yolo_labels_dir, image_manager, label_manager, MAX_BATCHES_LOAD_COUNT
 
-    workers = []
     images_paths = image_manager.get_all_images_in_path_and_subdirs(dataset_dir + subject_dir)
+    workers = []
+    batches_loaded = 0
  
     for image_path in images_paths:
+        batches_loaded += 1
+
         contrast: AugmenterContrastBrightness = AugmenterContrastBrightness(__get_random_int_avoiding_zero__(-90, 90, 10), __get_random_int_avoiding_zero__(-90, 90, 10))
         traslate: AugmenterTraslate = AugmenterTraslate(__get_random_int_avoiding_zero__(-70, 70, 20), __get_random_int_avoiding_zero__(-70, 70, 20))
         rotate_up: AugmenterRotate = AugmenterRotate(__get_random_int_avoiding_zero__(-45, 45, 20))
@@ -59,8 +65,8 @@ def spawn_worker(subject_dir: str, subject_num: str):
         v_flip: AugmenterVFlip = AugmenterVFlip()
         grayscale: AugmenterGrayscale = AugmenterGrayscale()
         scale: AugmenterScale = AugmenterScale(round(random.uniform(0.4, 1.4), 2))
-        blur: AugmenterBlur = AugmenterBlur(random.randint(10, 15))
-        noise: AugmenterNoise = AugmenterNoise(random.randint(10, 20)) # <--------------------------YET TO BE TESTED
+        blur: AugmenterBlur = AugmenterBlur(2)
+        noise: AugmenterNoise = AugmenterNoise(round(random.uniform(0.05, 0.15), 2)) 
 
         workers.append(Thread(target = __execute_job__, args = (contrast, image_path)))
         workers.append(Thread(target = __execute_job__, args = (traslate, image_path)))
@@ -75,12 +81,22 @@ def spawn_worker(subject_dir: str, subject_num: str):
         workers.append(Thread(target = __execute_job__, args = (blur, image_path)))
         workers.append(Thread(target = __execute_job__, args = (noise, image_path)))
 
+        if batches_loaded >= MAX_BATCHES_LOAD_COUNT:
+            for worker in workers:
+                worker.start()
+                
+            for worker in workers:
+                worker.join()
+
+            workers = []
+            batches_loaded = 0
+    
     for worker in workers:
         worker.start()
 
     for worker in workers:
         worker.join()
-    
+
     print("Done with Subject", subject_num)
 
 
@@ -92,7 +108,7 @@ def spawn_worker(subject_dir: str, subject_num: str):
 # create N threads
 # each thread should spawn 1 worker
 # each worker should augment 1 image with 1 augmenter 
-for i in range(1, 43):
+for i in range(1, 2):
     print("Subject", i)
-    subject_dir: str = "Subject {}/".format(i)
+    subject_dir: str = "Subject {}".format(i) + path_sep
     spawn_worker(subject_dir, i)

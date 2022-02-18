@@ -1,5 +1,4 @@
 from Augmenters.Augmenter import Augmenter
-from Augmenters.AugmenterRotate import AugmenterRotate
 from FileManagers.ImageManager import ImageManager
 from FileManagers.LabelManager import LabelManager
 from Workers.Worker import Worker

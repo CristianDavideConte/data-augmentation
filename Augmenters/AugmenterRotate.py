@@ -1,9 +1,14 @@
 from Augmenters.Augmenter import Augmenter
-import numpy as np
+from PIL import Image
 import math
 
-from PIL import Image
-from scipy import ndimage
+try: #test for full-gpu support
+    import cupy as np 
+    from cupyx.scipy import ndimage 
+    from cupyx.scipy.ndimage.filters import gaussian_filter
+except:
+    import numpy as np
+    from scipy import ndimage
 
 class AugmenterRotate(Augmenter):
     

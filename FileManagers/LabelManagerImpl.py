@@ -1,3 +1,4 @@
+from FileManagers.FileManager import FileManager
 from FileManagers.LabelManager import LabelManager
 from FileManagers.ImageManager import ImageManager
 
@@ -14,7 +15,7 @@ class LabelManagerImpl(LabelManager):
         return self.get_all_files_in_path_and_subdirs(self.__labels_path__, (yolo_filename,))[0] #the comma makes it a tuple      
 
     def get_YOLO_file_name(self, path: str):
-        return path.split("/")[-1] 
+        return path.split(self.os_separator)[-1] 
     
     def get_YOLO_file_name_no_ext(self, path: str):
         return self.get_YOLO_file_name(path).split(".")[0]

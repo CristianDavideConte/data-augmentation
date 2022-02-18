@@ -1,7 +1,12 @@
 from Augmenters.Augmenter import Augmenter
-
 from PIL import Image
-from scipy.ndimage.filters import gaussian_filter
+
+try: #test for full-gpu support
+    import cupy as np 
+    from cupyx.scipy import ndimage 
+    from cupyx.scipy.ndimage.filters import gaussian_filter 
+except:
+    from scipy.ndimage.filters import gaussian_filter
 
 class AugmenterBlur(Augmenter):
     def __init__(self, blur: float):

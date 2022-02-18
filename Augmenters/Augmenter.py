@@ -1,6 +1,13 @@
 from abc import ABC, abstractclassmethod
-import numpy as np
 from PIL import Image 
+
+try: #test for full-gpu support
+    import cupy as np 
+    from cupyx.scipy import ndimage 
+    from cupyx.scipy.ndimage.filters import gaussian_filter
+except:
+    import numpy as np
+    from scipy import ndimage
 
 class Augmenter(ABC):
     __rotation__: float = 0
@@ -29,9 +36,12 @@ class Augmenter(ABC):
 
     def get_array_from_image(self, image: Image):
         return np.array(image)
-
+        
     def get_image_from_array(self, image_arr: np.ndarray):
-        return Image.fromarray(image_arr, "RGB") 
-
+        try:
+            return Image.fromarray(np.asnumpy(image_arr), "RGB") #gpu
+        except:
+            return Image.fromarray(image_arr, "RGB") #cpu
+            
     def get_image_rotation(self, image: Image):
         return self.__rotation__
