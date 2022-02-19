@@ -9,8 +9,9 @@ except:
     from scipy.ndimage.filters import gaussian_filter
 
 class AugmenterBlur(Augmenter):
+    
     def __init__(self, blur: float):
-        self.__blur__ = abs(blur)
+        self.__blur__: float = abs(blur)
 
     def transform(self, image: Image):
         return gaussian_filter(self.get_array_from_image(image), (self.__blur__, self.__blur__, 0))

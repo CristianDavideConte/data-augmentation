@@ -34,7 +34,7 @@ class WorkerImpl(Worker):
         augmented_yolo_lines = []
 
         with Image.open(path) as image:
-            image = image.rotate(self.__get_initial_rotation__(image), expand = True)
+            image: Image = image.rotate(self.__get_initial_rotation__(image), expand = True)
             augmented_image: Image = self.__augmenter__.get_image_from_array(self.__augmenter__.transform(image))            
             augmented_image.save(augmented_image_path, "JPEG")
 

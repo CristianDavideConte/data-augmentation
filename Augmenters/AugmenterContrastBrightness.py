@@ -11,11 +11,11 @@ except:
 class AugmenterContrastBrightness(Augmenter):
 
 	def __init__(self, contrast_index: float = 0, brightness_index: float = 0):
-		self.__contrast_index__ = contrast_index
-		self.__brightness_index__ = brightness_index
+		self.__contrast_index__: float = contrast_index
+		self.__brightness_index__: float = brightness_index
 
 	def transform(self, image: Image):
-		image_arr = self.get_array_from_image(image)
+		image_arr: np.ndarray = self.get_array_from_image(image)
 		return np.array(np.clip(image_arr * (self.__contrast_index__ / 127 + 1) - self.__contrast_index__ + self.__brightness_index__, 0, 255), 
 						np.int8)
     

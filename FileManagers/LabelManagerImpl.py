@@ -7,8 +7,8 @@ from typing import Callable
 class LabelManagerImpl(LabelManager):
 
     def __init__(self, labels_path: str, image_manager: ImageManager):
-        self.__labels_path__ = labels_path
-        self.__image_manager__ = image_manager
+        self.__labels_path__: str = labels_path
+        self.__image_manager__: ImageManager = image_manager
     
     def get_YOLO_file_from_image_path(self, path: str):
         yolo_filename: str = self.__image_manager__.get_image_name_from_path_no_ext(path) + ".txt"

@@ -14,6 +14,7 @@ from Augmenters.AugmenterScale import AugmenterScale
 from Augmenters.AugmenterBlur import AugmenterBlur
 from Augmenters.AugmenterNoise import AugmenterNoise
 from Augmenters.AugmenterGrayscale import AugmenterGrayscale
+from Augmenters.AugmenterSharp import AugmenterSharp
 
 from threading import Thread
 
@@ -50,7 +51,7 @@ def spawn_worker(subject_dir: str, subject_num: str):
 
     images_paths = image_manager.get_all_images_in_path_and_subdirs(dataset_dir + subject_dir)
     workers = []
-    batches_loaded = 0
+    batches_loaded: int = 0
  
     for image_path in images_paths:
         batches_loaded += 1
@@ -67,6 +68,7 @@ def spawn_worker(subject_dir: str, subject_num: str):
         scale: AugmenterScale = AugmenterScale(round(random.uniform(0.4, 1.4), 2))
         blur: AugmenterBlur = AugmenterBlur(2)
         noise: AugmenterNoise = AugmenterNoise(round(random.uniform(0.05, 0.15), 2)) 
+        sharp: AugmenterSharp = AugmenterSharp(round(random.uniform(10.0, 30.0), 2))
 
         workers.append(Thread(target = __execute_job__, args = (contrast, image_path)))
         workers.append(Thread(target = __execute_job__, args = (traslate, image_path)))
@@ -80,6 +82,7 @@ def spawn_worker(subject_dir: str, subject_num: str):
         workers.append(Thread(target = __execute_job__, args = (grayscale, image_path)))
         workers.append(Thread(target = __execute_job__, args = (blur, image_path)))
         workers.append(Thread(target = __execute_job__, args = (noise, image_path)))
+        workers.append(Thread(target = __execute_job__, args = (sharp, image_path)))
 
         if batches_loaded >= MAX_BATCHES_LOAD_COUNT:
             for worker in workers:
@@ -108,7 +111,6 @@ def spawn_worker(subject_dir: str, subject_num: str):
 # create N threads
 # each thread should spawn 1 worker
 # each worker should augment 1 image with 1 augmenter 
-for i in range(1, 2):
-    print("Subject", i)
-    subject_dir: str = "Subject {}".format(i) + path_sep
-    spawn_worker(subject_dir, i)
+for subject_num in range(1, 43):
+    subject_dir: str = "Subject {}".format(subject_num) + path_sep
+    spawn_worker(subject_dir, subject_num)
