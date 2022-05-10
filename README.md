@@ -1,5 +1,5 @@
 # Data Augmentation
-A simple GPU-based image-enhancing tool for YOLO-labeled images. <br/>
+A simple GPU-based image-enhancing tool for YOLO-labeled images written in python. <br/>
 The image-enhancer are called `Augmenters` and they all implement the _**abstract class**_ `Augmenter`. <br/>
 
 Each augmenter has: 
