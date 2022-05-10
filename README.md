@@ -8,7 +8,7 @@ Each augmenter has:
 - a `get_transformed_YOLO_values` method which takes the original YOLO label values of an image and returns the transformed ones
 - a `get_augmenter_signature` method which returns a string containing the abbreviated name of the augmenter  <br/>
 
-The base `Augmenter` abstract class also defines some utility methods to convert image to NumPy arrays and viceversa. <br/>
+The base `Augmenter` abstract class also defines some utility methods to convert images to NumPy arrays and viceversa. <br/>
 
 The currently available augmenters are:
 - `AugmenterBlur`
@@ -26,7 +26,7 @@ The currently available augmenters are:
 
 ---
 
-The project also contains the `ImageManager` and the `LabelManager` _**abstract classes**_ which extend the `FileManager` _**abstract class**_ and that define many files/images/YOLO labels manipulation methods to smooth out the file-system related parts of the data-augmentation/image-enhancement. <br/>
+The project also contains the `ImageManager` and the `LabelManager` _**abstract classes**_ which extend the `FileManager` _**abstract class**_ and that define many files/images/YOLO labels manipulation methods to smooth out the file-system related part of the data-augmentation/image-enhancement. <br/>
 
 The available implementations of these classes are called: 
 - `ImageManagerImpl`
