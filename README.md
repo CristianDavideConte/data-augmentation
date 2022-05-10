@@ -24,16 +24,22 @@ The currently available augmenters are:
 - `AugmenterSharp`
 - `AugmenterTraslate`
 
+---
+
 The project also contains the `ImageManager` and the `LabelManager` _**abstract classes**_ which extend the `FileManager` _**abstract class**_ and that define many files/images/YOLO labels manipulation methods to smooth out the file-system related parts of the data-augmentation/image-enhancement. <br/>
 
 The available implementations of these classes are called: 
 - `ImageManagerImpl`
 - `LabelManagerImpl`
 
+---
+
 A high level class for directly transforming images and their labels is also provided and it's called `WorkerImpl` which is based upon the `Worker` _**abstrac class**_ and exposes the `transform_images_and_YOLO_labels` method.
 
 Testers can be found in the `Testers` directory.
 
+--- 
+
 ## Authors:
-### Cristian Davide Conte
-### Simone Morelli
+Cristian Davide Conte <br/>
+Simone Morelli
