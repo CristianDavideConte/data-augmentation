@@ -40,6 +40,6 @@ Testers can be found in the `Testers` directory.
 
 --- 
 
-## Authors:
+## Authors
 Cristian Davide Conte <br/>
 Simone Morelli
